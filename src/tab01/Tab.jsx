@@ -17,7 +17,7 @@ function App() {
   onMount(() => {
     try {
       console.log("инициализация SharedWorker");
-      const sharedWorker = new SharedWorker("src/shared-worker.js");
+      const sharedWorker = new SharedWorker("/src/shared-worker.js");
       setWorker(sharedWorker);
       // Обработчик входящих сообщений
       sharedWorker.port.onmessage = (event) => {
@@ -127,7 +127,7 @@ function App() {
       if (!root) return;
       const path = await getFullPath(root, task.handle);
       console.log("Выбранное задание: ", path);
-      // отправляем handle2 d ЫрфкуЦщклук
+      // отправляем handle2 в Shared Worker
       worker().port.postMessage({
         type: "setHandle2",
         handle: task.handle,
