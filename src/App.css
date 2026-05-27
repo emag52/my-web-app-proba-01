@@ -1,0 +1,65 @@
+body {
+    font-family: sans-serif;
+    padding: 10px;
+    background: gray;
+}
+
+.box {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.list2 {
+    position: fixed;
+    top: 230px;
+    border-radius: 10px;
+    /* подстрой под высоту list1 */
+    left: 20px;
+    right: 20px;
+    bottom: 520px;
+    max-width: 600px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 8px;
+    background: #fafafa;
+}
+
+.list2-item {
+    padding: 8  px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.list2-item.selected {
+    background: #c0d8ff;
+    font-weight: bold;
+}
+
+
+.list2-item:hover {
+    background: #e0e0e0;
+}
+
+select {
+    width: 100%;
+    padding: 6px;
+    max-width: 600px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
