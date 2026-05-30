@@ -17,6 +17,7 @@ onconnect = (event) => {
         console.log('SharedWorker получил:', msg)
         switch (msg.type) {
             case 'setHandle2':
+                console.log('setHandle2 received', msg.handle);
                 currentHandle2 = msg.handle;
                 console.log('SharedWorker: handle2 обновлён');
                 // Рассылаем обновление всем подключённым клиентам

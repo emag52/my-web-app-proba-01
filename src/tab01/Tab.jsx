@@ -1,7 +1,8 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import "../App.css";
+import { createSharedWorker } from "../shared-worker-client";
 
-function App() {
+export default function Tab() {
   // сигналы для хранения состояния
   const [rootHandle, setRootHandle] = createSignal(null);
   const [rootName, setRootName] = createSignal("");
@@ -16,14 +17,14 @@ function App() {
   // инициализация SharedWorker
   onMount(() => {
     try {
-      console.log("инициализация SharedWorker");
-      const sharedWorker = new SharedWorker("/src/shared-worker.js");
-      setWorker(sharedWorker);
+      console.log("инициализация Shared Worker");
+      const worker = createSharedWorker();
+      setWorker(worker);
       // Обработчик входящих сообщений
-      sharedWorker.port.onmessage = (event) => {
+      worker.port.onmessage = (event) => {
         const data = event.data;
         switch (data.type) {
-          case "handle2Update":
+          case "handle2Updated":
             setCurrentHandle2(data.handle);
             console.log("SolidJS: Получено обновление handle2");
             break;
@@ -35,29 +36,16 @@ function App() {
             break;
         }
       };
-      sharedWorker.port.onerror = (error) => {
+      worker.port.onerror = (error) => {
         console.error("Не удалось создать SharedWorker", error);
         setWorkerStatus("Ошибка Worker");
       };
-      sharedWorker.port.start();
+      worker.port.start();
     } catch (error) {
       console.error("Не удалось создать SharedWorker", error);
       setWorkerStatus("файл shared-worker не найден");
     }
   });
-
-  // Отправка handle2 в воркер
-  const sendHandleToWorker = (handle) => {
-    worker()?.port.postMessage({
-      type: "setHandle2",
-      handle: handle,
-    });
-  };
-
-  // Запрос текущего handle2 из воркера
-  const requestHandleFromWorker = () => {
-    worker()?.port.postMessage({ type: "getHandle2" });
-  };
 
   onCleanup(() => {
     // Закрытие соединения при удалении компонента
@@ -164,7 +152,7 @@ function App() {
       <div>
         <h4>Список заданий выбранного проекта</h4>
         <h3>ОТСТУПЫ ! Текущий выбранный элемент:</h3>
-        <div>{currentHandle2() || "—"}</div>
+        <div>{currentHandle2() ? currentHandle2().name : "—"}</div>
         <h4>Статус SharedWorker: {workerStatus()}</h4>{" "}
         <div id="list2" class="list2">
           {tasks().map((task) => (
@@ -183,5 +171,3 @@ function App() {
     </>
   );
 }
-
-export default App;
